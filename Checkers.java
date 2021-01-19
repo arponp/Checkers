@@ -37,70 +37,35 @@ public class Checkers {
 
                 printBoard(board);
 
-                // if (killer != null) {
-                // System.out.println(move + "'s next kill");
-                // System.out.println("Row: " + killer.getY() + ", Col: " + killer.getX());
-                // System.out.print("What row will you move to: ");
-                // int moveRow = input.nextInt();
-                // input.nextLine();
-                // int moveCol = input.nextInt();
-                // input.nextLine();
-                // if (!canMoveOrKill(killer, board, moveRow, moveCol, true)) {
-                // System.out.println("Move not possible. Redo");
-                // continue;
-                // }
+                if (killer != null) {
+                    System.out.println(move + "'s next kill");
+                    System.out.println("Row: " + (killer.getY() + 1) + ", Col: " + (killer.getX() + 1));
+                    System.out.print("What row will you move to: ");
+                    int moveRow = input.nextInt() - 1;
+                    input.nextLine();
+                    System.out.print("What col will you move to: ");
+                    int moveCol = input.nextInt() - 1;
+                    input.nextLine();
+                    if (!canMoveOrKill(killer, board, moveRow, moveCol, true)) {
+                        System.out.println("Move not possible. Redo");
+                        continue;
+                    }
 
-                // }
+                    row = killer.getY();
+                    col = killer.getX();
 
-                System.out.print("Pick a row ");
-                row = input.nextInt() - 1;
-                input.nextLine();
-                System.out.print("Pick a column ");
-                col = input.nextInt() - 1;
-                input.nextLine();
+                    // moving to new position
+                    board[row][col].setX(moveCol);
+                    board[row][col].setY(moveRow);
+                    board[moveRow][moveCol] = board[row][col];
+                    board[row][col] = null;
 
-                // checking cell in bounds or if exists
+                    // setting king
+                    if (board[moveRow][moveCol].getY() == 0 && board[moveRow][moveCol].getColor().equals("black"))
+                        board[moveRow][moveCol].makeKing();
+                    else if (board[moveRow][moveCol].getY() == 7 && board[moveRow][moveCol].getColor().equals("white"))
+                        board[moveRow][moveCol].makeKing();
 
-                if (row < 0 || row > 7 || col < 0 || col > 7 || board[row][col] == null
-                        || !board[row][col].getColor().equals(move)) {
-                    System.out.println("Invalid cell. Pick again");
-                    continue;
-                }
-
-                // checking move destination
-                System.out.print("What row would you like to move to: ");
-                int moveRow = input.nextInt() - 1;
-                input.nextLine();
-                System.out.print("What col would you like to move to: ");
-                int moveCol = input.nextInt() - 1;
-                input.nextLine();
-
-                if (Math.abs(moveRow - row) == 2 && Math.abs(moveCol - col) == 2)
-                    kill = true;
-                else
-                    kill = false;
-
-                // checking move
-
-                if (!canMoveOrKill(board[row][col], board, moveRow, moveCol, kill)) {
-                    System.out.println("Move not possible. Redo");
-                    System.out.println(move + "'s move \nPick your piece");
-                    continue;
-                }
-
-                // moving
-                board[row][col].setX(moveCol);
-                board[row][col].setY(moveRow);
-                board[moveRow][moveCol] = board[row][col];
-                board[row][col] = null;
-
-                // setting king
-                if (board[moveRow][moveCol].getY() == 0 && board[moveRow][moveCol].getColor().equals("black"))
-                    board[moveRow][moveCol].makeKing();
-                else if (board[moveRow][moveCol].getY() == 7 && board[moveRow][moveCol].getColor().equals("white"))
-                    board[moveRow][moveCol].makeKing();
-
-                if (kill) {
                     // removing piece from List
                     if (move.equals("black"))
                         whites.remove(board[(row + moveRow) / 2][(col + moveCol) / 2]);
@@ -108,9 +73,7 @@ public class Checkers {
                         blacks.remove(board[(row + moveRow) / 2][(col + moveCol) / 2]);
                     // remove from board
                     board[(row + moveRow) / 2][(col + moveCol) / 2] = null;
-
                     // check if another kill can be done
-
                     if (canKillAgain(board, board[moveRow][moveCol])) {
                         printBoard(board);
                         System.out.println(
@@ -127,8 +90,85 @@ public class Checkers {
                     }
                     break;
                 } else {
-                    break;
+                    System.out.print("Pick a row ");
+                    row = input.nextInt() - 1;
+                    input.nextLine();
+                    System.out.print("Pick a column ");
+                    col = input.nextInt() - 1;
+                    input.nextLine();
+
+                    // checking cell in bounds or if exists
+
+                    if (row < 0 || row > 7 || col < 0 || col > 7 || board[row][col] == null
+                            || !board[row][col].getColor().equals(move)) {
+                        System.out.println("Invalid cell. Pick again");
+                        continue;
+                    }
+
+                    // checking move destination
+                    System.out.print("What row would you like to move to: ");
+                    int moveRow = input.nextInt() - 1;
+                    input.nextLine();
+                    System.out.print("What col would you like to move to: ");
+                    int moveCol = input.nextInt() - 1;
+                    input.nextLine();
+
+                    if (Math.abs(moveRow - row) == 2 && Math.abs(moveCol - col) == 2)
+                        kill = true;
+                    else
+                        kill = false;
+
+                    // checking move
+
+                    if (!canMoveOrKill(board[row][col], board, moveRow, moveCol, kill)) {
+                        System.out.println("Move not possible. Redo");
+                        System.out.println(move + "'s move \nPick your piece");
+                        continue;
+                    }
+
+                    // moving
+                    board[row][col].setX(moveCol);
+                    board[row][col].setY(moveRow);
+                    board[moveRow][moveCol] = board[row][col];
+                    board[row][col] = null;
+
+                    // setting king
+                    if (board[moveRow][moveCol].getY() == 0 && board[moveRow][moveCol].getColor().equals("black"))
+                        board[moveRow][moveCol].makeKing();
+                    else if (board[moveRow][moveCol].getY() == 7 && board[moveRow][moveCol].getColor().equals("white"))
+                        board[moveRow][moveCol].makeKing();
+
+                    if (kill) {
+                        // removing piece from List
+                        if (move.equals("black"))
+                            whites.remove(board[(row + moveRow) / 2][(col + moveCol) / 2]);
+                        else
+                            blacks.remove(board[(row + moveRow) / 2][(col + moveCol) / 2]);
+                        // remove from board
+                        board[(row + moveRow) / 2][(col + moveCol) / 2] = null;
+
+                        // check if another kill can be done
+
+                        if (canKillAgain(board, board[moveRow][moveCol])) {
+                            printBoard(board);
+                            System.out.println(
+                                    "Another kill is possible\nWould you like to kill again:\nYes (true)\nNo (false)");
+                            killAgain = input.nextBoolean();
+                            input.nextLine();
+
+                            if (killAgain) {
+                                killer = board[moveRow][moveCol];
+                                continue;
+                            } else {
+                                killer = null;
+                            }
+                        }
+                        break;
+                    } else {
+                        break;
+                    }
                 }
+
             }
 
             // checking winner
@@ -287,7 +327,7 @@ public class Checkers {
 
     public static boolean canKillAgain(pieces[][] game, pieces checker) {
         boolean canKill = false;
-
+        System.out.println("Checker in question: row " + (checker.getY() + 1) + ", col " + (checker.getX() + 1));
         if (checker.kingStatus()) {
             // check down
             if (checker.getY() + 2 <= 7 && checker.getX() + 2 <= 7) { // bottom right in bounds
