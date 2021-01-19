@@ -25,6 +25,30 @@ public class Checkers {
 
         while (!isWinner) {
 
+            if (move.equals("black")) {
+                boolean canMove = false;
+                for (pieces p : blacks) {
+                    if (canMove(board, p)) {
+                        canMove = true;
+                    }
+                }
+                if (!canMove) {
+                    System.out.println("No moves for black. White wins!");
+                    break;
+                }
+            } else {
+                boolean canMove = false;
+                for (pieces p : whites) {
+                    if (canMove(board, p)) {
+                        canMove = true;
+                    }
+                }
+                if (!canMove) {
+                    System.out.println("No moves for black. White wins!");
+                    break;
+                }
+            }
+
             System.out.println(move + "'s move \nPick your piece");
 
             // moving
@@ -410,5 +434,140 @@ public class Checkers {
         }
 
         return canKill;
+    }
+
+    public static boolean canMove(pieces[][] game, pieces checker) {
+        boolean canMove = false;
+
+        if (checker.kingStatus()) {
+            // check kill possibilities
+            // check down
+            if (checker.getY() + 2 <= 7 && checker.getX() + 2 <= 7) { // bottom right in bounds
+                if (game[checker.getY() + 1][checker.getX() + 1] != null
+                        && game[checker.getY() + 2][checker.getX() + 2] == null) { // check if there is space
+                    if (!game[checker.getY() + 1][checker.getX() + 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill bottom right");
+                        canMove = true;
+                    }
+                }
+            }
+            if (checker.getY() + 2 <= 7 && checker.getX() - 2 >= 0) { // bottom left in bounds
+                if (game[checker.getY() + 1][checker.getX() - 1] != null
+                        && game[checker.getY() + 2][checker.getX() - 2] == null) { // check if there is space
+                    if (!game[checker.getY() + 1][checker.getX() - 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill bottom left");
+                        canMove = true;
+                    }
+                }
+            }
+            // check up
+            if (checker.getY() - 2 >= 0 && checker.getX() + 2 <= 7) { // top right in bounds
+                if (game[checker.getY() - 1][checker.getX() + 1] != null
+                        && game[checker.getY() - 2][checker.getX() + 2] == null) { // check if there is space
+                    if (!game[checker.getY() - 1][checker.getX() + 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill top right");
+                        canMove = true;
+                    }
+                }
+            }
+            if (checker.getY() - 2 >= 0 && checker.getX() - 2 >= 0) { // top left in bounds
+                if (game[checker.getY() - 1][checker.getX() - 1] != null
+                        && game[checker.getY() - 2][checker.getX() - 2] == null) { // check if there is space
+                    if (!game[checker.getY() - 1][checker.getX() - 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill top left");
+                        canMove = true;
+                    }
+                }
+            }
+            // check move possibilities
+            // check down
+            if (checker.getY() + 1 <= 7 && checker.getX() + 1 <= 7) { // bottom right in bounds
+                if (game[checker.getY() + 1][checker.getX() + 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+            if (checker.getY() + 1 <= 7 && checker.getX() - 1 >= 0) { // bottom left in bounds
+                if (game[checker.getY() + 1][checker.getX() - 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+            // check up
+            if (checker.getY() - 1 >= 0 && checker.getX() + 1 <= 7) { // top right in bounds
+                if (game[checker.getY() - 1][checker.getX() + 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+            if (checker.getY() - 1 >= 0 && checker.getX() - 1 >= 0) { // top left in bounds
+                if (game[checker.getY() - 1][checker.getX() - 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+        } else if (checker.getColor().equals("white")) {
+            // check kill possibilities
+            // check down
+            if (checker.getY() + 2 <= 7 && checker.getX() + 2 <= 7) { // bottom right in bounds
+                if (game[checker.getY() + 1][checker.getX() + 1] != null
+                        && game[checker.getY() + 2][checker.getX() + 2] == null) { // check if there is space
+                    if (!game[checker.getY() + 1][checker.getX() + 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill bottom right");
+                        canMove = true;
+                    }
+                }
+            }
+            if (checker.getY() + 2 <= 7 && checker.getX() - 2 >= 0) { // bottom left in bounds
+                if (game[checker.getY() + 1][checker.getX() - 1] != null
+                        && game[checker.getY() + 2][checker.getX() - 2] == null) { // check if there is space
+                    if (!game[checker.getY() + 1][checker.getX() - 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill bottom left");
+                        canMove = true;
+                    }
+                }
+            }
+            // move
+            if (checker.getY() + 1 <= 7 && checker.getX() + 1 <= 7) { // bottom right in bounds
+                if (game[checker.getY() + 1][checker.getX() + 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+            if (checker.getY() + 1 <= 7 && checker.getX() - 1 >= 0) { // bottom left in bounds
+                if (game[checker.getY() + 1][checker.getX() - 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+        } else if (checker.getColor().equals("black")) {
+            // check kill possibilities
+            // check up
+            if (checker.getY() - 2 >= 0 && checker.getX() + 2 <= 7) { // top right in bounds
+                if (game[checker.getY() - 1][checker.getX() + 1] != null
+                        && game[checker.getY() - 2][checker.getX() + 2] == null) { // check if there is space
+                    if (!game[checker.getY() - 1][checker.getX() + 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill top right");
+                        canMove = true;
+                    }
+                }
+            }
+            if (checker.getY() - 2 >= 0 && checker.getX() - 2 >= 0) { // top left in bounds
+                if (game[checker.getY() - 1][checker.getX() - 1] != null
+                        && game[checker.getY() - 2][checker.getX() - 2] == null) { // check if there is space
+                    if (!game[checker.getY() - 1][checker.getX() - 1].getColor().equals(checker.getColor())) {
+                        System.out.println("Can kill top left");
+                        canMove = true;
+                    }
+                }
+            }
+            // move
+            if (checker.getY() - 1 >= 0 && checker.getX() + 1 <= 7) { // top right in bounds
+                if (game[checker.getY() - 1][checker.getX() + 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+            if (checker.getY() - 1 >= 0 && checker.getX() - 1 >= 0) { // top left in bounds
+                if (game[checker.getY() - 1][checker.getX() - 1] == null) { // check if there is space
+                    canMove = true;
+                }
+            }
+        }
+
+        return canMove;
     }
 }
