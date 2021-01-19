@@ -5,59 +5,59 @@ public class pieces {
   private String color;
 
   public pieces() {
-    xCor = 0;
-    yCor = 0;
-    king = false;
-    color = "";
+    this.xCor = 0;
+    this.yCor = 0;
+    this.king = false;
+    this.color = "";
   }
 
   public pieces(int x, int y, boolean b, String c) {
-    xCor = x;
-    yCor = y;
-    king = b;
-    color = c;
+    this.xCor = x;
+    this.yCor = y;
+    this.king = b;
+    this.color = c;
   }
 
   public int getX() {
-    return xCor;
+    return this.xCor;
   }
 
   public int getY() {
-    return yCor;
+    return this.yCor;
   }
 
   public String getColor() {
-    return color;
+    return this.color;
   }
 
   public boolean kingStatus() {
-    return king;
+    return this.king;
   }
 
   public void setX(int x) {
-    xCor = x;
+    this.xCor = x;
   }
 
   public void setY(int y) {
-    yCor = y;
+    this.yCor = y;
   }
 
   public void setColor(String c) {
-    color = c;
+    this.color = c;
   }
 
   public void makeKing() {
-    king = true;
+    this.king = true;
   }
 
   public String toString() {
-    if (color == "white") {
-      if (king)
+    if (this.color == "white") {
+      if (this.king)
         return "W";
       else
         return "w";
     } else {
-      if (king)
+      if (this.king)
         return "B";
       else
         return "b";
